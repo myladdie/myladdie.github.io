@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 思路：*注：这种方法不是很好
+                该方法是：找到整个物体的基线，然后各个面根据基线旋转到该位置即可
+        */
+        
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+        }
+        
+        .wrap {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 400px;
+            height: 400px;
+            /* 景深 */
+            perspective: 400px;
+        }
+        
+        .wrap .box {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 150px;
+            height: 150px;
+            /*3D效果 */
+            transform-style: preserve-3d;
+            /* 过渡时间 */
+            transition: 3s;
+            /* 设置旋转的基点 */
+            transform-origin: center center -75px;
+        }
+        
+        .wrap .box>div {
+            width: 150px;
+            height: 150px;
+            background-color: whitesmoke;
+            text-align: center;
+            font: 50px/150px "微软雅黑";
+            position: absolute;
+            /* 设置每个面的背面看不到，即隐藏 */
+            backface-visibility: hidden;
+            border-radius: 1px;
+            /* 设置旋转的基点 */
+            transform-origin: center center -75px;
+        }
+        
+        .wrap .box>div>ul {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+            display: flex;
+        }
+        
+        .wrap .box>div>ul li {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            border-radius: 50%;
+        }
+        /* 第1个div */
+        
+        .box>div:nth-child(1) {
+            transform: rotateX(90deg);
+        }
+        
+        .box>div:nth-child(1)>ul {
+            /* 主轴上内容居中 */
+            justify-content: center;
+            /* 辅轴上内容居中 */
+            align-items: center;
+        }
+        
+        .box>div:nth-child(2)>ul {
+            /* 主轴上空白分布在中间 */
+            justify-content: space-between;
+        }
+        
+        .box>div:nth-child(2) li:nth-child(1) {
+            /* 给单独的li 辅轴尾边 */
+            align-self: flex-end;
+        }
+        /* 第3个div */
+        
+        .box>div:nth-child(3) {
+            /* 旋转基线定在该元素的左边 */
+            transform: rotateY(90deg);
+        }
+        
+        .box>div:nth-child(3)>ul {
+            justify-content: space-between;
+        }
+        
+        .box>div:nth-child(3)>ul>li:nth-child(1) {
+            align-self: flex-end;
+        }
+        
+        .box>div:nth-child(3)>ul>li:nth-child(2) {
+            align-self: center;
+        }
+        /* 第4个孩子 */
+        
+        .box>div:nth-child(4) {
+            transform: rotateY(-90deg);
+        }
+        /* 需要个div添加flex
+            flex-wrap: wrap; 这个属性是当位置放不下时进行换行
+        */
+        
+        .box>div:nth-child(4)>ul>div,
+        .box>div:nth-child(6)>ul>div {
+            line-height: 0px;
+            width: 50px;
+            height: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-between;
+        }
+        /* 第5个孩子 */
+        
+        .box>div:nth-child(5) {
+            transform: rotateY(180deg);
+        }
+        
+        .box>div:nth-child(5)>ul>div {
+            line-height: 0px;
+            width: 33.3px;
+            height: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-between;
+        }
+        
+        .box>div:nth-child(5)>ul>div:nth-child(2) {
+            align-content: center;
+        }
+        /* 第6个孩子 */
+        
+        .box>div:nth-child(6) {
+            transform: rotateX(-90deg);
+        }
+        
+        .box:hover {
+            transform: rotate(360deg) rotateX(360deg) rotateY(360deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="box">
+            <!-- 1~3 点数是只要一个容器就可以完成的 -->
+            <div>
+                <ul>
+                    <li></li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <!--3~6点数 是需要多个容器完成的 -->
+            <div>
+                <ul>
+                    <div>
+                        <li></li>
+                        <li></li>
+                    </div>
+                    <div>
+                        <li></li>
+                        <li></li>
+                    </div>
+
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <div>
+                        <li></li>
+                        <li></li>
+                    </div>
+                    <div>
+
+                        <li></li>
+                    </div>
+                    <div>
+                        <li></li>
+                        <li></li>
+                    </div>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <div>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </div>
+                    <div>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
